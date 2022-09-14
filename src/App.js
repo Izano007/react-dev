@@ -24,6 +24,9 @@ function App() {
     //     setTasks(tasks.map((task)=>task.id===id ? {...task,reminder: !task.reminder} : task))
     // }
 
+
+    const apiUrl = 'http://localhost:8080/api/tasks';
+
     useEffect(() => {
         const getTasks = async () => {
             const dataFromServer = await fetchTasks()
@@ -33,19 +36,19 @@ function App() {
     }, [])
 
     const fetchTasks = async () => {
-        const res = await fetch('http://localhost:5000/tasks')
+        const res = await fetch(apiUrl)
         const data = await res.json()
         return data
     }
 
     const fetchTask = async (id) => {
-        const res = await fetch(`http://localhost:5000/tasks/${id}`)
+        const res = await fetch(`${apiUrl}/${id}`)
         const data = await res.json()
         return data
     }
 
     const handleAdd = async (task) => {
-        const res = await fetch('http://localhost:5000/tasks', {
+        const res = await fetch(apiUrl, {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json',
@@ -57,7 +60,7 @@ function App() {
     }
 
     const handleDelete = async (id) => {
-        const res = await fetch(`http://localhost:5000/tasks/${id}`, {
+        const res = await fetch(`${apiUrl}/${id}`, {
             method: 'DELETE'
         })
         res.status === 200 ? setTasks(tasks.filter((task) => task.id !== id)) : alert('Error')
@@ -66,7 +69,7 @@ function App() {
     const handleToggle = async (id) => {
         const myTask = await fetchTask(id)
         const myUpdatedTask = { ...myTask, reminder: !myTask.reminder }
-        const res = await fetch(`http://localhost:5000/tasks/${id}`, {
+        const res = await fetch(`${apiUrl}/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-type': 'application/json',
