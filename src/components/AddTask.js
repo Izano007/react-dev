@@ -15,6 +15,13 @@ function AddTask({ onAdd }) {
             return
         }
 
+        var date = new Date(day);
+        var dateToday = new Date();
+        if (isNaN(date.getTime()) || date.getTime() < dateToday.getTime()) {
+            alert('Cannot add that Task');
+            return;
+        }
+        
         onAdd({ text, day, reminder })
 
         setText('')
@@ -23,17 +30,15 @@ function AddTask({ onAdd }) {
 
     }
 
-
-
     return (
         <form className='add-form' onSubmit={handleSubmit}>
             <div className='form-control'>
                 <label>Task</label>
-                <input type='text' placeholder='Add Task' value={text} onChange={(e) => setText(e.target.value)} />
+                <input type='text' placeholder='Add task' value={text} onChange={(e) => setText(e.target.value)} />
             </div>
             <div className='form-control'>
                 <label>Day and Time</label>
-                <input type='text' placeholder='Add Day and Time' value={day} onChange={(e) => setDay(e.target.value)} />
+                <input type='datetime-local' placeholder='Add Day and Time' value={day} onChange={(e) => setDay(e.target.value)} />
             </div>
             <div className='form-control form-control-check'>
                 <label>Set Reminder</label>
